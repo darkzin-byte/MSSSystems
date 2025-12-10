@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MSS Systems - Cálculos Adicionais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f5f7fa;
+            color: #1a202c;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #005ba1;
+            margin-bottom: 30px;
+            font-size: 28px;
+            font-weight: 600;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: 500;
+            color: #2d3748;
+            font-size: 14px;
+        }
+
+        input, select {
+            padding: 8px 12px;
+            margin-top: 5px;
+            width: 100%;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #005ba1;
+            box-shadow: 0 0 0 3px rgba(0, 91, 161, 0.1);
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .form-section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-section h2 {
+            color: #005ba1;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .button-container {
+            margin-top: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: #005ba1;
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background-color: #00457d;
+            box-shadow: 0 2px 4px rgba(0, 91, 161, 0.2);
+        }
+
+        .btn-secondary {
+            background-color: #e2e8f0;
+            color: #2d3748;
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background-color: #cbd5e0;
+        }
+
+        .btn-danger {
+            background-color: #f56565;
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background-color: #e53e3e;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .tabela-section {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .tabela-section h2 {
+            color: #005ba1;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        thead tr {
+            background-color: #005ba1;
+        }
+
+        th {
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+        }
+
+        tbody tr {
+            background-color: #fafbfc;
+        }
+
+        tbody tr:hover {
+            background-color: #f0f4f8;
+        }
+
+        .package-panel {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 24px;
+        }
+
+        .package-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .package-title {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 15px;
+        }
+
+        .package-badge {
+            background-color: #005ba1;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .package-badge.empty {
+            background-color: #cbd5e0;
+            color: #718096;
+        }
+
+        .package-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .package-item {
+            background: white;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #005ba1;
+            font-size: 13px;
+        }
+
+        .package-item-name {
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .package-item-value {
+            color: #718096;
+            font-size: 12px;
+        }
+
+        .btn-remove {
+            background-color: #fed7d7;
+            color: #c53030;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .btn-remove:hover {
+            background-color: #fc8787;
+            color: white;
+        }
+
+        .package-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #718096;
+        }
+
+        .empty-state-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .empty-state-text {
+            font-size: 14px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .button-container {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Calculo de Adicionais - MSS Systems</h1>
+
+<div class="main-container">
+    <div class="form-section">
+        <h2>Dados do Funcionário</h2>
+
+        <label for="Cargos">Qual o cargo?</label>
+        <select name="Cargos" id="Cargos" onchange="atualizarSalario()">
+            <option value="" disabled selected>Escolha o cargo</option>
+            <option value="acougueiro" data-salario="1909.17">Açougueiro</option>
+            <option value="padeiro" data-salario="1800">Padeiro</option>
+            <option value="atendente de padaria" data-salario="1689.04">Atendente de Padaria</option>
+            <option value="caixa" data-salario="1695.74">Caixa</option>
+            <option value="repositor" data-salario="1690.82">Repositor</option>
+            <option value="salario_minimo" data-salario="1518">Base no salário mínimo</option>
+        </select>
+
+        <label>Salário Base:</label>
+        <input type="text" id="salario" readonly>
+
+        <label>Domingos ou Feriados:</label>
+        <input type="number" id="domingosFeriados" min="0">
+
+        <label>Horas Extras (em minutos):</label>
+        <input type="number" id="horasExtras" min="0">
+
+        <label>Dobras:</label>
+        <input type="number" id="dobras" min="0">
+
+        <label>Dobras de Domingo:</label>
+        <input type="number" id="dobrasDomingo" min="0">
+
+        <label>Dias a Descontar:</label>
+        <input type="number" id="descontarDias" min="0">
+
+        <label>Dias a Adicionar:</label>
+        <input type="number" id="adicionarDias" min="0">
+
+        <div class="button-container">
+            <button class="btn btn-primary" onclick="calcularSalario()">Calcular</button>
+            <button class="btn btn-secondary" onclick="limparForm()">Limpar Formulário</button>
+            <button class="btn btn-primary" onclick="adicionarAoPacote()">Adicionar ao Pacote</button>
+        </div>
+    </div>
+
+    <div>
+        <div class="tabela-section">
+            <h2>Relatório de Adicionais</h2>
+            <table id="tabelaResultados">
+                <thead>
+                    <tr>
+                        <th>Descrição</th>
+                        <th>Valor (R$)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>Domingos e Feriados</td><td id="valorDomingoFeriado">R$ 0,00</td></tr>
+                    <tr><td>Horas Extras</td><td id="valorHorasExtras">R$ 0,00</td></tr>
+                    <tr><td>Dobras</td><td id="valorDobras">R$ 0,00</td></tr>
+                    <tr><td>Dobras de Domingo</td><td id="valorDobrasDomingo">R$ 0,00</td></tr>
+                    <tr><td>Descontar Dias</td><td id="valorDescontarDias">R$ 0,00</td></tr>
+                    <tr><td>Adicionar Dias</td><td id="valorAdicionarDias">R$ 0,00</td></tr>
+                    <tr><td>Insalubridade (Açougueiro)</td><td id="valorInsalubridade">R$ 0,00</td></tr>
+                    <tr><td>Quebra de Caixa</td><td id="valorQuebraCaixa">R$ 0,00</td></tr>
+                    <tr style="background-color: #edf2f7;"><td><strong>Total de Adicionais</strong></td><td id="valorAdicionais"><strong>R$ 0,00</strong></td></tr>
+                    <tr style="background-color: #edf2f7;"><td><strong>Salário Total com Adicionais</strong></td><td id="valorTotal"><strong>R$ 0,00</strong></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="package-panel">
+            <div class="package-header">
+                <span class="package-title">Pacote de Funcionários</span>
+                <span class="package-badge empty" id="packageBadge">Vazio</span>
+            </div>
+
+            <div class="package-list" id="packageList">
+                <div class="empty-state">
+                    <div class="empty-state-icon">📦</div>
+                    <div class="empty-state-text">Nenhum funcionário no pacote</div>
+                </div>
+            </div>
+
+            <div class="package-actions">
+                <button class="btn btn-primary" id="btnGerarPDF" onclick="gerarPDF()" disabled>Gerar PDF</button>
+                <button class="btn btn-danger" id="btnLimparPacote" onclick="limparPacote()" disabled>Limpar Pacote</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pacotePDF" style="position: fixed; top: -9999px; left: 0; width: 100%; background-color: #ffffff; padding: 0;"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    let pacoteCalculos = [];
+
+    function atualizarSalario() {
+        let cargoSelecionado = document.getElementById("Cargos");
+        let salarioBaseStr = cargoSelecionado.options[cargoSelecionado.selectedIndex].getAttribute("data-salario");
+        let salarioBase = parseFloat(salarioBaseStr.replace(',', '.'));
+        document.getElementById("salario").value = salarioBase.toFixed(2);
+    }
+
+    function formatarMoeda(valor) {
+        return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function calcularSalario() {
+        let cargoSelecionado = document.getElementById("Cargos");
+        let cargo = cargoSelecionado.value;
+        let salario = parseFloat(document.getElementById("salario").value) || 0;
+        let domingosFeriados = parseFloat(document.getElementById("domingosFeriados").value) || 0;
+        let horasExtras = parseFloat(document.getElementById("horasExtras").value) || 0;
+        let dobras = parseFloat(document.getElementById("dobras").value) || 0;
+        let dobrasDomingo = parseFloat(document.getElementById("dobrasDomingo").value) || 0;
+        let descontarDias = parseFloat(document.getElementById("descontarDias").value) || 0;
+        let adicionarDias = parseFloat(document.getElementById("adicionarDias").value) || 0;
+
+        let valorDomingoFeriado = salario / 30 * 2 * domingosFeriados;
+        let valorHorasExtras = salario / 30 / 8 / 60 * horasExtras;
+        let valorDobras = salario / 30 * dobras;
+        let valorDobrasDomingo = salario / 30 * 4 * dobrasDomingo;
+        let valorDescontarDias = salario / 30 * descontarDias;
+        let valorAdicionarDias = salario / 30 * adicionarDias;
+
+        let insalubridade = 0;
+        if (cargo === "acougueiro") {
+            insalubridade = 303.60 * ((30 - descontarDias) / 30);
+        }
+
+        let quebraCaixa = 0;
+        if (cargo === "caixa") {
+            let valorTotalQuebra = salario * 0.10;
+            quebraCaixa = valorTotalQuebra * ((30 - descontarDias) / 30);
+        }
+
+        let adicionais = valorDomingoFeriado + valorHorasExtras + valorDobras + valorDobrasDomingo + valorAdicionarDias + insalubridade + quebraCaixa;
+        let salarioTotal = salario + adicionais - valorDescontarDias;
+
+        document.getElementById("valorDomingoFeriado").textContent = formatarMoeda(valorDomingoFeriado);
+        document.getElementById("valorHorasExtras").textContent = formatarMoeda(valorHorasExtras);
+        document.getElementById("valorDobras").textContent = formatarMoeda(valorDobras);
+        document.getElementById("valorDobrasDomingo").textContent = formatarMoeda(valorDobrasDomingo);
+        document.getElementById("valorDescontarDias").textContent = formatarMoeda(-valorDescontarDias);
+        document.getElementById("valorAdicionarDias").textContent = formatarMoeda(valorAdicionarDias);
+        document.getElementById("valorInsalubridade").textContent = formatarMoeda(insalubridade);
+        document.getElementById("valorQuebraCaixa").textContent = formatarMoeda(quebraCaixa);
+        document.getElementById("valorAdicionais").textContent = formatarMoeda(adicionais);
+        document.getElementById("valorTotal").textContent = formatarMoeda(salarioTotal);
+
+        return {
+            cargo,
+            salario,
+            valorDomingoFeriado,
+            valorHorasExtras,
+            valorDobras,
+            valorDobrasDomingo,
+            valorDescontarDias,
+            valorAdicionarDias,
+            insalubridade,
+            quebraCaixa,
+            adicionais,
+            salarioTotal
+        };
+    }
+
+    function limparForm() {
+        document.getElementById("Cargos").selectedIndex = 0;
+        document.getElementById("salario").value = '';
+        document.querySelectorAll("input[type='number']").forEach(input => input.value = '');
+
+        document.getElementById("valorDomingoFeriado").textContent = "R$ 0,00";
+        document.getElementById("valorHorasExtras").textContent = "R$ 0,00";
+        document.getElementById("valorDobras").textContent = "R$ 0,00";
+        document.getElementById("valorDobrasDomingo").textContent = "R$ 0,00";
+        document.getElementById("valorDescontarDias").textContent = "R$ 0,00";
+        document.getElementById("valorAdicionarDias").textContent = "R$ 0,00";
+        document.getElementById("valorInsalubridade").textContent = "R$ 0,00";
+        document.getElementById("valorQuebraCaixa").textContent = "R$ 0,00";
+        document.getElementById("valorAdicionais").textContent = "R$ 0,00";
+        document.getElementById("valorTotal").textContent = "R$ 0,00";
+    }
+
+    function atualizarPainel() {
+        const packageList = document.getElementById("packageList");
+        const packageBadge = document.getElementById("packageBadge");
+        const btnGerarPDF = document.getElementById("btnGerarPDF");
+        const btnLimparPacote = document.getElementById("btnLimparPacote");
+
+        if (pacoteCalculos.length === 0) {
+            packageList.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">📦</div>
+                    <div class="empty-state-text">Nenhum funcionário no pacote</div>
+                </div>
+            `;
+            packageBadge.textContent = "Vazio";
+            packageBadge.className = "package-badge empty";
+            btnGerarPDF.disabled = true;
+            btnLimparPacote.disabled = true;
+            return;
+        }
+
+        packageList.innerHTML = pacoteCalculos.map((item, index) => `
+            <div class="package-item">
+                <div>
+                    <div class="package-item-name">#${index + 1} ${item.cargo}</div>
+                    <div class="package-item-value">Total: ${formatarMoeda(item.salarioTotal)}</div>
+                </div>
+                <button class="btn-remove" onclick="removerDoPacote(${index})">Remover</button>
+            </div>
+        `).join('');
+
+        packageBadge.textContent = `${pacoteCalculos.length} funcionário${pacoteCalculos.length > 1 ? 's' : ''}`;
+        packageBadge.className = "package-badge";
+        btnGerarPDF.disabled = false;
+        btnLimparPacote.disabled = false;
+    }
+
+    function adicionarAoPacote() {
+        if (!document.getElementById("Cargos").value) {
+            alert("Por favor, selecione um cargo!");
+            return;
+        }
+
+        const calculoAtual = calcularSalario();
+        pacoteCalculos.push(calculoAtual);
+        atualizarPainel();
+    }
+
+    function removerDoPacote(index) {
+        pacoteCalculos.splice(index, 1);
+        atualizarPainel();
+    }
+
+    function limparPacote() {
+        if (confirm("Deseja realmente limpar todo o pacote?")) {
+            pacoteCalculos = [];
+            atualizarPainel();
+        }
+    }
+
+    function gerarPDF() {
+        const pacoteDiv = document.getElementById("pacotePDF");
+        pacoteDiv.innerHTML = '';
+
+        let totalGeral = 0;
+        let htmlContent = '<div style="font-family: Arial, sans-serif; color: #333; background: white;">';
+
+        // Páginas individuais
+        pacoteCalculos.forEach((c, index) => {
+            totalGeral += c.salarioTotal;
+            htmlContent += `
+                <div style="page-break-after: always; padding: 40px; background: white; min-height: 297mm; box-sizing: border-box;">
+                    <div style="background: linear-gradient(135deg, #005ba1 0%, #00457d 100%); color: white; padding: 30px; margin: -40px -40px 40px -40px; text-align: center; box-sizing: border-box;">
+                        <h1 style="margin: 0; font-size: 28px; font-weight: bold;">MSS Systems</h1>
+                        <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Cálculo de Adicionais Salariais</p>
+                    </div>
+
+                    <div style="border: 2px solid #005ba1; border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                        <div style="background-color: #005ba1; color: white; padding: 20px; text-align: center;">
+                            <h2 style="margin: 0; font-size: 18px;">Funcionário #${index + 1}</h2>
+                            <p style="margin: 5px 0 0 0; font-size: 11px; opacity: 0.9;">Cargo: ${c.cargo}</p>
+                        </div>
+
+                        <div style="padding: 30px;">
+                            <div style="margin-bottom: 25px;">
+                                <h3 style="color: #005ba1; margin: 0 0 15px 0; font-size: 14px;">Informações Básicas</h3>
+                                <div style="background: #f5f7fa; padding: 15px; border-radius: 6px;">
+                                    <p style="margin: 8px 0;"><strong>Salário Base:</strong> ${formatarMoeda(c.salario)}</p>
+                                </div>
+                            </div>
+
+                            <div style="margin-bottom: 25px;">
+                                <h3 style="color: #005ba1; margin: 0 0 15px 0; font-size: 14px;">Detalhamento de Adicionais</h3>
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <thead>
+                                        <tr style="background-color: #005ba1; color: white;">
+                                            <th style="padding: 10px; text-align: left; font-size: 12px;">Descrição</th>
+                                            <th style="padding: 10px; text-align: right; font-size: 12px;">Valor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr style="background-color: #fafbfc;">
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 11px;">Domingos e Feriados</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 11px;">${formatarMoeda(c.valorDomingoFeriado)}</td>
+                                        </tr>
+                                        <tr style="background-color: #ffffff;">
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 11px;">Horas Extras</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 11px;">${formatarMoeda(c.valorHorasExtras)}</td>
+                                        </tr>
+                                        <tr style="background-color: #fafbfc;">
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 11px;">Dobras</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 11px;">${formatarMoeda(c.valorDobras)}</td>
+                                        </tr>
+                                        <tr style="background-color: #ffffff;">
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 11px;">Dobras de Domingo</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 11px;">${formatarMoeda(c.valorDobrasDomingo)}</td>
+                                        </tr>
+                                        <tr style="background-color: #fafbfc;">
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 11px;">Descontar Dias</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 11px;">${formatarMoeda(-c.valorDescontarDias)}</td>
+                                        </tr>
+                                        <tr style="background-color: #ffffff;">
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 11px;">Adicionar Dias</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 11px;">${formatarMoeda(c.valorAdicionarDias)}</td>
+                                        </tr>
+                                        <tr style="background-color: #fafbfc;">
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 11px;">Insalubridade</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 11px;">${formatarMoeda(c.insalubridade)}</td>
+                                        </tr>
+                                        <tr style="background-color: #ffffff;">
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 11px;">Quebra de Caixa</td>
+                                            <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 11px;">${formatarMoeda(c.quebraCaixa)}</td>
+                                        </tr>
+                                        <tr style="background-color: #edf2f7;">
+                                            <td style="padding: 12px; font-weight: bold; font-size: 12px;">Total de Adicionais</td>
+                                            <td style="padding: 12px; text-align: right; font-weight: bold; font-size: 12px;">${formatarMoeda(c.adicionais)}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div style="background: linear-gradient(135deg, #005ba1 0%, #00457d 100%); color: white; padding: 20px; border-radius: 8px; text-align: center;">
+                                <p style="margin: 0 0 8px 0; font-size: 12px; opacity: 0.9;">Salário Total com Adicionais</p>
+                                <p style="margin: 0; font-size: 24px; font-weight: bold;">${formatarMoeda(c.salarioTotal)}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 30px; padding: 15px; background-color: #fff9e6; border-left: 4px solid #f59e0b; border-radius: 6px;">
+                        <p style="margin: 0; font-size: 10px; color: #92400e; line-height: 1.6;">
+                            <strong>⚠️ Observações Importantes:</strong><br>
+                            • Este cálculo é estimativo e pode sofrer alterações conforme a convenção coletiva da categoria.<br>
+                            • Valores sujeitos a descontos legais (INSS, IRRF, vale transporte, etc.).<br>
+                            • Consulte o departamento de RH para informações detalhadas.
+                        </p>
+                    </div>
+
+                    <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #718096; font-size: 10px;">
+                        <p style="margin: 0;"><strong>MSS Systems</strong></p>
+                        <p style="margin: 5px 0 0 0;">Documento gerado em ${new Date().toLocaleDateString('pt-BR')}</p>
+                    </div>
+                </div>
+            `;
+        });
+
+        // Página de Resumo
+        htmlContent += `
+            <div style="padding: 40px; background: white; min-height: 297mm; box-sizing: border-box;">
+                <div style="background: linear-gradient(135deg, #005ba1 0%, #00457d 100%); color: white; padding: 30px; margin: -40px -40px 40px -40px; text-align: center; box-sizing: border-box;">
+                    <h1 style="margin: 0; font-size: 28px; font-weight: bold;">MSS Systems</h1>
+                    <p style="margin: 8px 0 0 0; font-size: 12px; opacity: 0.9;">Resumo do Pacote de Cálculos</p>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h2 style="color: #005ba1; font-size: 20px; margin-bottom: 20px;">Resumo Geral</h2>
+                    <div style="background: #f5f7fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                        <p style="margin: 0 0 10px 0; font-size: 14px;"><strong>Total de Funcionários:</strong> ${pacoteCalculos.length}</p>
+                        <p style="margin: 0; font-size: 14px;"><strong>Data de Geração:</strong> ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}</p>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #005ba1; font-size: 16px; margin-bottom: 15px;">Listagem de Funcionários</h3>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background-color: #005ba1; color: white;">
+                                <th style="padding: 12px; text-align: left; font-size: 12px;">#</th>
+                                <th style="padding: 12px; text-align: left; font-size: 12px;">Cargo</th>
+                                <th style="padding: 12px; text-align: right; font-size: 12px;">Salário Base</th>
+                                <th style="padding: 12px; text-align: right; font-size: 12px;">Adicionais</th>
+                                <th style="padding: 12px; text-align: right; font-size: 12px;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${pacoteCalculos.map((c, i) => `
+                                <tr style="background-color: ${i % 2 === 0 ? '#fafbfc' : '#ffffff'};">
+                                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 11px;">${i + 1}</td>
+                                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 11px;">${c.cargo}</td>
+                                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 11px;">${formatarMoeda(c.salario)}</td>
+                                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-size: 11px;">${formatarMoeda(c.adicionais)}</td>
+                                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: bold; font-size: 11px;">${formatarMoeda(c.salarioTotal)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="background: linear-gradient(135deg, #005ba1 0%, #00457d 100%); color: white; padding: 25px; border-radius: 8px; text-align: center; margin-top: 30px;">
+                    <p style="margin: 0 0 10px 0; font-size: 14px; opacity: 0.9;">Valor Total do Pacote</p>
+                    <p style="margin: 0; font-size: 32px; font-weight: bold;">${formatarMoeda(totalGeral)}</p>
+                </div>
+
+                <div style="margin-top: 40px; padding: 15px; background-color: #fff9e6; border-left: 4px solid #f59e0b; border-radius: 6px;">
+                    <p style="margin: 0; font-size: 10px; color: #92400e; line-height: 1.6;">
+                        <strong>⚠️ Observações Importantes:</strong><br>
+                        • Este relatório é um demonstrativo estimativo dos cálculos de adicionais salariais.<br>
+                        • Os valores apresentados podem variar conforme a convenção coletiva da categoria e acordos individuais.<br>
+                        • Todos os valores estão sujeitos a descontos legais obrigatórios (INSS, IRRF, vale transporte, etc.).<br>
+                        • Para informações oficiais e detalhadas, consulte o departamento de Recursos Humanos.
+                    </p>
+                </div>
+
+                <div style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #e2e8f0; text-align: center; color: #718096; font-size: 10px;">
+                    <p style="margin: 0;"><strong>MSS Systems</strong></p>
+                    <p style="margin: 5px 0 0 0;">Documento gerado em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')}</p>
+                </div>
+            </div>
+        `;
+
+        htmlContent += '</div>';
+        pacoteDiv.innerHTML = htmlContent;
+
+        const opt = {
+            margin: 0,
+            filename: `calculo_adicionais_mss_systems_${new Date().toISOString().split('T')[0]}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        html2pdf().set(opt).from(pacoteDiv).save();
+    }
+</script>
+</body>
+</html>
